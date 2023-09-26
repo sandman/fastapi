@@ -43,7 +43,7 @@ async def root():
     return {"message": "This is my API"}
 
 
-@app.get("/posts")
+@app.get("/posts", response_model=List[schemas.Post])
 def get_posts(db: Session = Depends(get_db)):
     # # ORM implementation (without SQL)
     posts = db.query(models.Post).all()
@@ -51,10 +51,12 @@ def get_posts(db: Session = Depends(get_db)):
     # # SQL Implementation (no ORM)
     # cursor.execute("SELECT * FROM posts")
     # posts = cursor.fetchall()
-    return {"data": posts}
+    return posts
 
 
-@app.post("/posts", status_code=status.HTTP_201_CREATED)
+@app.post(
+    "/posts", status_code=status.HTTP_201_CREATED, response_model=schemas.Post
+)
 def create_posts(post: schemas.PostCreate, db: Session = Depends(get_db)):
     # # ORM implementation (without SQL)
     new_post = models.Post(**post.model_dump())
@@ -71,12 +73,14 @@ def create_posts(post: schemas.PostCreate, db: Session = Depends(get_db)):
     # )
     # new_post = cursor.fetchone()
     # conn.commit()
-    return {"data": new_post}
+    return new_post
 
 
-@app.get("/posts/{id}", status_code=status.HTTP_200_OK)
+@app.get(
+    "/posts/{id}", status_code=status.HTTP_200_OK, response_model=schemas.Post
+)
 def get_post(id: int, db: Session = Depends(get_db)):
-    ## ORM implementation (without SQL)
+    # # ORM implementation (without SQL)
     post = db.query(models.Post).filter(models.Post.id == id).first()
     # # SQL implementation (without ORM)
     # cursor.execute("SELECT * FROM posts WHERE id = %s", (id,))
@@ -87,7 +91,7 @@ def get_post(id: int, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND,
         )
 
-    return {"data:": f"Found post: {post.title}"}
+    return post
 
 
 @app.delete("/posts/{id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -132,4 +136,4 @@ def update_post(
 
     post_query.update(post.model_dump(), synchronize_session=False)
     db.commit()
-    return {"data": post_query.first()}
+    return post
