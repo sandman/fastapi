@@ -11,10 +11,10 @@ from ..database import get_db
 from sqlalchemy.orm import Session
 from typing import List
 
-router = APIRouter()
+router = APIRouter(prefix="/posts", tags=["posts"])
 
 
-@router.get("/posts", response_model=List[schemas.Post])
+@router.get("/", response_model=List[schemas.Post])
 def get_posts(db: Session = Depends(get_db)):
     # # ORM implementation (without SQL)
     posts = db.query(models.Post).all()
@@ -23,7 +23,7 @@ def get_posts(db: Session = Depends(get_db)):
 
 
 @router.post(
-    "/posts", status_code=status.HTTP_201_CREATED, response_model=schemas.Post
+    "/", status_code=status.HTTP_201_CREATED, response_model=schemas.Post
 )
 def create_posts(post: schemas.PostCreate, db: Session = Depends(get_db)):
     # # ORM implementation (without SQL)
@@ -37,7 +37,7 @@ def create_posts(post: schemas.PostCreate, db: Session = Depends(get_db)):
 
 
 @router.get(
-    "/posts/{id}", status_code=status.HTTP_200_OK, response_model=schemas.Post
+    "/{id}", status_code=status.HTTP_200_OK, response_model=schemas.Post
 )
 def get_post(id: int, db: Session = Depends(get_db)):
     # # ORM implementation (without SQL)
@@ -52,7 +52,7 @@ def get_post(id: int, db: Session = Depends(get_db)):
     return post
 
 
-@router.delete("/posts/{id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_post(id: int, db: Session = Depends(get_db)):
     # # ORM implementation (without SQL)
     post = db.query(models.Post).filter(models.Post.id == id)
@@ -68,7 +68,7 @@ def delete_post(id: int, db: Session = Depends(get_db)):
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
-@router.put("/posts/{id}")
+@router.put("/{id}")
 def update_post(
     id: int, post: schemas.PostCreate, db: Session = Depends(get_db)
 ):
