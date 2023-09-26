@@ -2,6 +2,7 @@ from .database import Base
 from sqlalchemy import Column, Integer, String, Boolean, TIMESTAMP, text
 
 
+# This is the sqlalchemy model schema
 class Post(Base):
     __tablename__ = "posts"
 
@@ -13,5 +14,5 @@ class Post(Base):
         TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
     )
 
-    def __repr__(self):
-        return f"<Post {self.title}>"
+    # def __repr__(self):
+    #     return f"<Post {self.title}>"

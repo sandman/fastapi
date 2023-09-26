@@ -2,12 +2,12 @@ from datetime import date
 from pydantic import BaseModel
 
 
-class Post(BaseModel):
-    id: int
+# This is the Pydantic model schema
+class PostBase(BaseModel):
     title: str
     content: str
-    published: bool
-    created_at: date
+    published: bool = True
 
-    class Config:
-        orm_mode = True
+
+class PostCreate(PostBase):
+    pass
