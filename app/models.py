@@ -16,3 +16,14 @@ class Post(Base):
 
     # def __repr__(self):
     #     return f"<Post {self.title}>"
+
+
+class User(Base):
+    __tablename__ = "users"
+
+    email = Column(String(50), nullable=False, unique=True)
+    password = Column(String, nullable=False)
+    id = Column(Integer, primary_key=True, nullable=False, index=True)
+    created_at = Column(
+        TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
+    )
