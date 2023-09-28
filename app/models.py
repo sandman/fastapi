@@ -8,6 +8,7 @@ from sqlalchemy import (
     text,
     ForeignKey,
 )
+from sqlalchemy.orm import relationship
 
 
 # This is the sqlalchemy model schema
@@ -25,8 +26,7 @@ class Post(Base):
         Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False
     )
 
-    # def __repr__(self):
-    #     return f"<Post {self.title}>"
+    owner = relationship("User")
 
 
 class User(Base):
