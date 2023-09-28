@@ -19,7 +19,11 @@ def get_posts(
     db: Session = Depends(get_db),
     current_user: int = Depends(oauth2.get_current_user),
 ):
-    # # ORM implementation (without SQL)
+    # posts = (
+    #     db.query(models.Post)
+    #     .filter(models.Post.owner_id == current_user.id)
+    #     .all()
+    # )
     posts = db.query(models.Post).all()
 
     return posts
