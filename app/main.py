@@ -8,7 +8,8 @@ from .config import settings
 app = FastAPI()
 
 # Import the models created in Alchemy from models.py
-models.Base.metadata.create_all(bind=engine)
+# This is commented out since we're using Alembic to manage our migrations
+# models.Base.metadata.create_all(bind=engine)
 
 
 app.include_router(post.router)
